@@ -1,0 +1,205 @@
+{% load static %}
+{% load crispy_forms_tags %}
+{% load mathfilters %}
+
+<!--Table for structure of scheduler-->
+<table class="mt-2 mb-2 text-nowrap" style="width: 100%;">
+    <thead>
+        <tr>
+            <th style="width: 7%; height: 20px;"></th>
+            <th style="width: 18.6%; height: 20px;">Mon</th>
+            <th style="width: 18.6%;">Tue</th>
+            <th style="width: 18.6%;">Wed</th>
+            <th style="width: 18.6%;">Thu</th>
+            <th style="width: 18.6%;">Fri</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="m-0"><p class="small m-0">0900</p></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="m-0"><p class="small m-0">1000</p></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="m-0"><p class="small m-0">1100</p></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="m-0"><p class="small m-0">1200</p></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="m-0"><p class="small m-0">1300</p></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="m-0"><p class="small m-0">1400</p></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="m-0"><p class="small m-0">1500</p></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="m-0"><p class="small m-0">1600</p></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="m-0"><p class="small m-0">1700</p></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        
+        <tr>
+            <td class="m-0"><p class="small m-0">1800</p></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="m-0"><p class="small m-0">1900</p></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="m-0"><p class="small m-0">2000</p></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="m-0"><p class="small m-0">2100</p></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="m-0"><p class="small m-0">2200</p></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+{% if request.user.is_authenticated  %}
+    <!--Iterate over key value pairs. key is the label e.g. course1, value is the course object-->
+    {% for key, value in selectedCourses.items %}
+        <form method="post" action="{% url 'deleteCourse' %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ searchedTerm }}">
+            <div class="desc{{key|slice:'6:7'}} position-relative shadow-sm">
+                    <button class="badge badge-dark float-right mt-2 mr-1 align-middle" href="#">
+                        <input name="courseid" id="{{value.courseID}}" value="{{value.courseID}}" type="hidden">x
+                    </button>
+        </form>
+                <b>{{value.courseID}} - {{value.title}}</b>
+                <p class="small mb-0">
+                    {{value.d1}} {{value.time1}}
+                    {% if value.d2 != None %}
+                        | {{value.d2}} {{value.time2}}
+                    {% endif %}
+                    {% if value.instructor != '' %}
+                        | {{value.instructor}} 
+                    {% endif %}
+                </p>
+            </div>
+            {% with classTemplate="d-flex position-absolute sch-box" base=0.66045 pTemplate="small m-0"%}
+            {% for d in value.d1 %}
+                {% if d == 'M' %}
+                <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 9%; height: {{ 0.66045|mul:value.duration1 }}px; top: {{value.delt91}}px">
+                    <p class="{{ pTemplate }}">{{value.courseID}}</p>
+                </div>
+                {% elif d == 'T' %}
+                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 27%; height: {{ base|mul:value.duration1 }}px; top: {{value.delt91}}px">
+                        <p class="{{ pTemplate }}">{{value.courseID}}</p>
+                    </div>
+                {% elif d == 'W' %}
+                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 44.7%; height: {{ base|mul:value.duration1 }}px; top: {{value.delt91}}px">
+                        <p class="{{ pTemplate }}">{{value.courseID}}</p>
+                    </div>
+                {% elif d == 'R' %}
+                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 62.5%; height: {{ base|mul:value.duration1 }}px; top: {{value.delt91}}px">
+                        <p class="{{ pTemplate }}">{{value.courseID}}</p>
+                    </div>
+                {% elif d == 'F' %}
+                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 80.5%; height: {{ base|mul:value.duration1 }}px; top: {{value.delt91}}px">
+                        <p class="{{ pTemplate }}">{{value.courseID}}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% for d in value.d2 %}
+                {% if d == 'M' %}
+                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 9%; height: {{ base|mul:value.duration1 }}px; top: {{value.delt91}}px">
+                        <p class="{{ pTemplate }}">{{value.courseID}}</p>
+                    </div>
+                {% elif d == 'T' %}
+                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 27%; height: {{ base|mul:value.duration1 }}px; top: {{value.delt91}}px">
+                        <p class="{{ pTemplate }}">{{value.courseID}}</p>
+                    </div>
+                {% elif d == 'W' %}
+                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 44.7%; height: {{ base|mul:value.duration1 }}px; top: {{value.delt91}}px">
+                        <p class="{{ pTemplate }}">{{value.courseID}}</p>
+                    </div>
+                {% elif d == 'R' %}
+                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 62.5%; height: {{ base|mul:value.duration1 }}px; top: {{value.delt91}}px">
+                        <p class="{{ pTemplate }}">{{value.courseID}}</p>
+                    </div>
+                {% elif d == 'F' %}
+                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 80.5%; height: {{ base|mul:value.duration1 }}px; top: {{value.delt91}}px">
+                        <p class="{{ pTemplate }}">{{value.courseID}}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% endwith %}
+    {% endfor %}
+{% endif %}

@@ -1,0 +1,36 @@
+{% extends 'CourseBrowser/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block mainSection%}
+<div class="container-fluid">
+    <div class="row align-items-start">
+        <!--Left section starts here-->
+        <div class="col">
+            <!--Search Form-->
+            <div id ='form' class="bd-highlight container mr-1 mt-3 p-0">
+                <form action="{% url 'search' %}" method="get" class="row mb-0 justify-content-center">
+                    <div class="col-9 mb-0 mr-0">
+                        {{ searchform.searchTerm|as_crispy_field }}
+                    </div>    
+                    <button class= "btn btn-outline-success bd-highlight col-2 p-0 mb-3 ml-0" type="submit" name="search" id="search" value="search">Search</button>  
+                </form>
+            </div>
+            <!-- This block is for the search results area -->
+            {% block resultsArea %}
+
+            {% endblock%}
+
+            <!--If on home page, display help-->
+            {% if request.session.currentPage == 'home' %}
+                {% include 'CourseBrowser/helpInsert.html' %}
+            {% endif %}
+
+        </div>
+        <!--Right section starts here-->
+        <div class="d-none d-sm-block col cal">
+            {% include 'CourseBrowser/scheduleInsert.html' %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

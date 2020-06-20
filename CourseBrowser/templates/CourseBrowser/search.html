@@ -1,0 +1,106 @@
+{% extends 'CourseBrowser/home.html' %}
+{% load crispy_forms_tags %}
+
+{% block resultsArea %}
+<p>Searching for: {{ searchedTerm }}</p>
+
+<!--Course Listing-->
+<div id = "accordion" class = "mt-0">
+    {% for course in courses %}
+        <div class = "card mb-1 shadow-sm mt-0">
+            <div class="container p-0 m-0 no-gutters">
+                <div class="row p-0 m-0 no-gutters">
+                    <div class="col p-0 m-0 no-gutters" style="width: 100%">
+                        <button class = "card-header btn collapsed text-left" data-toggle = "collapse" data-target="#collapse{{course.courseID}}" aria-expanded="false" aria-controls="collapse{{course.courseID}}" style="width: 100%; border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-style: none;">
+                        
+                            <span class="badge mr-1 {% if course.avl > 0 %} 
+                                                    badge-success
+                                                {% else %}
+                                                    badge-danger
+                                                {% endif %} ">
+                                {% if course.avl < 900 %}
+                                    {{ course.avl }}
+                                {% else %}
+                                    <!--Put spaces to increase the size of the green/red box-->
+                                    <span>&nbsp;&nbsp;&nbsp;</span>
+                                {% endif %}
+                            </span>
+                                                    
+                            <b>{{ course.courseID }} - {{ course.title }}</b>
+                            {% if course.gm == "SU" %}
+                                <span class='badge badge-primary ml-1'>SU</span>
+                            {% elif course.gm == "NR" %}
+                                <span class='badge badge-primary ml-1'>NR</span>
+                            {% endif %}
+                            {% if course.yl == 1 %}
+                                <span class='badge badge-secondary ml-1'>YL</span>
+                            {% endif %}
+                            {% if course.fr == 1 %}
+                                <span class='badge badge-success ml-1'>FR</span>
+                            {% endif %}
+                            {% if course.la == 1 %}
+                                <span class='badge badge-danger ml-1'>LA</span>
+                            {% endif %}
+                            {% if course.qa == 1 %}
+                                <span class='badge badge-warning ml-1'>QA</span>
+                            {% endif %}
+                            {% if course.Format == "CLS" %}
+                                <span class='badge badge-info ml-1'>CLS</span>
+                            {% elif course.Format == "INT" %}
+                                <span class='badge badge-info ml-1'>INT</span>
+                            {% elif course.Format == "OTH" %}
+                                <span class='badge badge-info ml-1'>OTH</span>
+                            {% endif %}
+                            {% if course.xlist != "" %}
+                                <span class="badge badge-dark ml-1"> {{ course.xlist }} </span>
+                            {% endif %}
+                            <p class="small mb-0">
+                                {{ course.d1 }} {{ course.time1 }} 
+                                {% if course.d2 != None %}
+                                | {{ course.d2 }} {{ course.time2 }}
+                                {% endif %}
+                                {% if course.instructor != '' %}
+                                | {{ course.instructor }}
+                                {% endif %}
+                            </p>
+                        </button>
+                    </div>
+                    <div class="col-1 p-0 m-0 card-header btn collapsed text-left" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px; border-style: none;">
+                        {% if request.user.is_authenticated  %}
+                            <form method="post" action="{% url 'addCourse' %}" class="m-0 p-0">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ searchedTerm }}">
+                                <button>
+                                    <span class="badge badge-dark mr-1" href="#" style="margin-top: 20px;">
+                                        <input name="courseid" id="{{course.courseID}}" value="{{course.courseID}}" type="hidden">
+                                        +
+                                    </span>
+                                </button>
+                            </form>
+                        {% else %}
+                            <button onclick='alertModal("Please log in or sign up to use the scheduler")'><span class="badge badge-dark mr-1" href="#" style="margin-top: 20px;">+</span></button>
+                        {% endif %}
+                    </div>
+                    </div>
+            </div>
+            <div id="collapse{{course.courseID}}" class="collapse" aria-labelledby="heading{{course.courseID}}" data-parent="#accordion">
+                <div class = "card-body">
+                    <b>{{ course.units }} unit{% if course.units != 1 %}s{% endif %} </b>| 
+                    {% if course.sp == 1 %}
+                    <b>Special permission required</b> | 
+                    {% endif %}
+                    <b>Max = {{ course.Max }} </b> | <b>Enrolled = {{ course.enr }} </b>
+                    {% if couse.wl != 0 %}
+                    | <b> Waitlist = {{ course.wl }} </b>
+                    {% endif %}
+                    {% if course.limits != '' %}
+                    | <b>Course Limits = {{ course.limits }}</b>
+                    {% endif %}
+                    <br>
+                    {{ course.description }}
+                </div>
+            </div>
+        </div>            
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,170 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:image" content="{% static 'Screenshot.png' %}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://notbanner.ml" />
+    <meta property="og:title" content="Not Banner: Fall 2020" />
+    <meta property="og:description" content="A non-official replacement for Vassar's schedule of classes that displays course information in a mobile-friendly format along with a scheudle maker." />
+    <title>Fall 2020</title>
+    <link href="{% static 'bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'style.min.css' %}" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <!--Navbar-->
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+        <div class= "d-flex flex-grow-1">
+            <span class="navbar-brand mb-0"><a class="text-dark"href="{% url 'home' %}">Not Banner: Fall 2020</a></span>
+            <!--Navbar button for small screens-->
+            <div class ="w-100 text-right">
+                <button class ="navbar-toggler" type="button" data-toggle="collapse" data-target="#navComponents" aria-controls="navComponents" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+        <!--Navbar navigation items-->
+        <div class="collapse navbar-collapse flex-grow-1 text-center" id="navComponents">
+            <div class="navbar-nav ml-auto flex-nowrap">
+                <a class="d-block d-md-none nav-item nav-link" href="{% url 'search' %}">Search<span class="sr-only">(current)</span></a>
+                <a class="d-block d-md-none nav-item nav-link" href="{% url 'scheduler' %}">Scheduler</a>
+                {% if request.user.is_authenticated  %}
+                    <div class="dropdown">
+                        <a class="nav-item nav-link menu-item" id="logoutMenuButton" data-toggle="dropdown" href="#">
+                            {{ user.username }}
+                        </a>
+                        <div class="dropdown-menu">
+                            <form action="{% url 'logout' %}" method="POST" class="">
+                                {% csrf_token %}
+                                <button class="nav-item nav-link" href="#">Log out</a>
+                            </form>
+                        </div>
+                    </div>
+                {% else %}
+                    <a class="nav-item nav-link menu-item nav-active" data-toggle="modal" data-target="#loginModal" href="#">Log in</a>
+                    <a class="nav-item nav-link menu-item" data-toggle="modal" data-target="#signUpModal" href="#">Sign up</a>
+                {% endif %}
+                <a class="nav-item nav-link menu-item" data-toggle="modal" data-target="#help" href="#">Help</a>
+                <a class="nav-item nav-link menu-item" data-toggle="modal" data-target="#about" href="#">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MODALS -->
+    <div class="modal fade" id="loginModal" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form action="{% url 'login' %}" method="POST" class="">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Log in</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                        {% csrf_token %}
+                        {{ loginForm.username|as_crispy_field }}
+                        {{ loginForm.password|as_crispy_field }}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" name="loginBtn" id="loginBtn" value="loginBtn" class="btn btn-primary">Log in</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+            
+    <div class="modal fade" id="signUpModal" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form action="{% url 'signup' %}" method="POST" class="">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Sign Up</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                        {% csrf_token %}
+                        {{ registrationForm|crispy }}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" name="loginBtn" id="loginBtn" value="loginBtn" class="btn btn-primary">Sign Up</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id ="help" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Help</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    {% include 'CourseBrowser/helpInsert.html' %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id ="about" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">About</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-center">Jason Lee<br>Vassar College Class of 2022<br>Please send bugs or feature requests to: <a href="mailto:lyuchong@vassar.edu">lyuchong@vassar.edu</a></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="alert-modal" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="alert-modal-title">Alert</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <p id="error">Username/Password is incorrect. Please try again. </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block mainSection %}
+    {% endblock %}
+
+    <script src = "{% static 'jQuery.js' %}" type = "text/javascript"></script>
+    <script src = "{% static 'bootstrap.bundle.min.js' %}" type = "text/javascript"></script>
+    <script>
+        function alertModal(text) {
+            $(document).ready(function(){
+                    $("#error").html(text);
+                    $('#alert-modal').modal("show");
+                    });
+        };
+    </script>
+</body>

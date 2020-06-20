@@ -1,0 +1,200 @@
+table{
+    border: 1px solid rgb(171, 171, 171, 0.5);
+    border-radius:3px;
+    /*width: 100%;*/
+    padding: 1px;
+    display: table;
+    /*-ms-flex: 0 0 230px;
+    flex: 0 0 230px;*/
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+th, td{
+    border: 1px solid rgb(171, 171, 171, 0.3);
+    border-radius:3px;
+    padding: 5px;
+    height: 40px;
+}
+
+.box1 {
+    border-left: 5px solid rgb(236, 82, 127);
+    background-color: rgba(236, 82, 127, 0.3);
+    color: black;
+    width: 16.5%;
+    padding:4px;
+    border-radius: 3px;
+    margin: 2px;
+    position: absolute;
+    /*top: 7.1%;
+    left: 80.5%;
+    height: 6%;*/
+}
+
+.desc1{
+    border-left: 5px solid rgb(236, 82, 127);
+    background-color: rgba(236, 82, 127, 0.3);
+    width: 100%;
+    padding:7px;
+    border-radius: 3px;
+    margin: 2px;
+}
+
+.box2 {
+    border-left: 5px solid rgb(130, 92, 198);
+    background-color: rgba(130, 92, 198, 0.3);
+    width: 16.5%;
+    padding:4px;
+    border-radius: 3px;
+    margin: 2px;
+}
+
+.desc2{
+    border-left: 5px solid rgb(130, 92, 198);
+    background-color: rgba(130, 92, 198, 0.3);
+    width: 100%;
+    padding:7px;
+    border-radius: 3px;
+    margin: 2px;
+}
+
+.box3 {
+    border-left: 5px solid rgb(252, 173, 67);
+    background-color: rgba(252, 173, 67, 0.3);
+    width: 16.5%;
+    padding:4px;
+    border-radius: 3px;
+    margin: 2px;
+    position: absolute;
+    /*top: 8.5%;
+    left: 80px;*/
+}
+
+.desc3{
+    border-left: 5px solid rgb(252, 173, 67);
+    background-color: rgba(252, 173, 67, 0.3);
+    width: 100%;
+    padding:7px;
+    border-radius: 3px;
+    margin: 2px;
+}
+
+.box4 {
+    border-left: 5px solid rgb(125, 203, 191);
+    background-color: rgba(125, 203, 191, 0.3);
+    width: 16.5%;
+    padding:4px;
+    border-radius: 3px;
+    margin: 2px;
+    position: absolute;
+    /*top: 8.5%;
+    left: 80px;*/
+}
+
+.desc4{
+    border-left: 5px solid rgb(125, 203, 191);
+    background-color: rgba(125, 203, 191, 0.3);
+    width: 100%;
+    padding:7px;
+    border-radius: 3px;
+    margin: 2px;
+}
+
+.box5 {
+    border-left: 5px solid rgb(63, 114, 246);
+    background-color: rgba(63, 114, 246, 0.3);
+    width: 16.5%;
+    padding:4px;
+    border-radius: 3px;
+    margin: 2px;
+    position: absolute;
+    /*top: 8.5%;
+    left: 80px;*/
+}
+
+.desc5{
+    border-left: 5px solid rgb(63, 114, 246);
+    background-color: rgba(63, 114, 246, 0.3);
+    width: 100%;
+    padding:7px;
+    border-radius: 3px;
+    margin: 2px;
+}
+
+.box6 {
+    border-left: 5px solid rgb(251, 230, 207);
+    background-color: rgba(251, 230, 207, 0.3);
+    color: black;
+    width: 16.5%;
+    padding:4px;
+    border-radius: 3px;
+    margin: 2px;
+    position: absolute;
+    /*top: 8.5%;
+    left: 80px;*/
+}
+
+.desc6{
+    border-left: 5px solid rgb(251, 230, 207);
+    background-color: rgba(251, 230, 207, 0.3);
+    color: black;
+    width: 100%;
+    padding:7px;
+    border-radius: 3px;
+    margin: 2px;
+}
+
+.box7 {
+    border-left: 5px solid rgb(91, 185, 95);
+    background-color: rgba(91, 185, 95, 0.3);
+    width: 16.5%;
+    padding:4px;
+    border-radius: 3px;
+    margin: 2px;
+    position: absolute;
+    /*top: 8.5%;
+    left: 80px;*/
+}
+
+.desc7{
+    border-left: 5px solid rgb(91, 185, 95);
+    background-color: rgba(91, 185, 95, 0.3);
+    width: 100%;
+    padding:7px;
+    border-radius: 3px;
+    margin: 2px;
+}
+
+.box9 {
+    border-left: 5px solid rgb(52, 58, 64);
+    background-color: rgba(52, 58, 64, 0.3);
+    width: 16%;
+    padding:4px;
+    border-radius: 3px;
+    margin: 2px;
+    position: absolute;
+    top: 25.4%;
+    left: 80px;
+}
+
+.plus{
+    position: absolute;
+    top:50%;
+}
+
+.cross{
+    position: absolute;
+    /*right:0px;*/
+    top:10%;
+}
+
+button{
+    border:none;
+    background:none;
+}
+
+
+.sch {
+    -ms-flex: 0 0 900px;
+    flex: 0 0 900px;
+}

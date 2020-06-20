@@ -1,0 +1,25 @@
+{% extends 'CourseBrowser/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block mainSection %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col sch">
+            <p class="m-1">Best viewed in landscape mode</p>
+            {% include 'CourseBrowser/scheduleInsert.html' %}
+        </div>
+    </div>
+</div>
+
+<!--Script for proper vertical alignment of time blocks. Only needed when scheduler is only thing on the page-->
+<script>
+    var elts, i, l;
+    elts = document.getElementsByClassName("sch-box");
+    l = elts.length;
+    for (i = 0; i < l; i++) {
+        elts[i].style.top = elts[i].offsetTop + 26 + "px";
+    }
+</script>
+
+{% endblock %}
+    
