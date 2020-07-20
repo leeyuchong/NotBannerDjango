@@ -21,9 +21,11 @@ def home(request):
     args = {'searchform': searchform, 'loginForm': loginForm, 'registrationForm': registrationForm}
 
     # Retrieve the courses in the user's profile
+    
     if request.user.is_authenticated:
         userRow = Profile.objects.get(user_id=request.user.id)
         selectedCourses = {}
+
         if userRow.cal1course1 != "blank": 
             selectedCourses["course1"]=Courses.objects.get(courseID=userRow.cal1course1)
         if userRow.cal1course2 != "blank": 
@@ -39,6 +41,7 @@ def home(request):
         if userRow.cal1course7 != "blank":
             selectedCourses["course7"]=Courses.objects.get(courseID=userRow.cal1course7)
         args['selectedCourses'] = selectedCourses
+    
     return render(request, 'CourseBrowser/home.html', args)
 
 def search(request):
@@ -56,6 +59,7 @@ def search(request):
     if request.user.is_authenticated:
         userRow = Profile.objects.get(user_id=request.user.id)
         selectedCourses = {}
+        
         if userRow.cal1course1 != "blank": 
             selectedCourses["course1"]=Courses.objects.get(courseID=userRow.cal1course1)
         if userRow.cal1course2 != "blank": 
@@ -70,6 +74,7 @@ def search(request):
             selectedCourses["course6"]=Courses.objects.get(courseID=userRow.cal1course6)
         if userRow.cal1course7 != "blank":
             selectedCourses["course7"]=Courses.objects.get(courseID=userRow.cal1course7)
+        
         args['selectedCourses'] = selectedCourses
 
     # Check to see if user made a search. Add or delete course will get to the search page without a search query
@@ -89,8 +94,9 @@ def search(request):
     # Searching the database for the query. Create MySQL query manually to search all columns for the keyword
     searchResult = inputString
     args['searchedTerm'] = searchResult
+
     splitString = inputString.upper().split(' ')
-    print(splitString)
+    print('split string', splitString)
     queryString = ""
     for s in splitString:
         if queryString != "":

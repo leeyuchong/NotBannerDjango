@@ -54,6 +54,9 @@
                             {% if course.xlist != "" %}
                                 <span class="badge badge-dark ml-1"> {{ course.xlist }} </span>
                             {% endif %}
+                            {% if course.status != null %}
+                                <span class='badge ml-1' style="background-color: #7B1A2B; color: white">{{ course.status }}</span>
+                            {% endif %}
                             <p class="small mb-0">
                                 {{ course.d1 }} {{ course.time1 }} 
                                 {% if course.d2 != None %}

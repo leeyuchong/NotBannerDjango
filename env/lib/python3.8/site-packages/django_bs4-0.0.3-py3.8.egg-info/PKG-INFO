@@ -1,0 +1,91 @@
+Metadata-Version: 1.1
+Name: django-bs4
+Version: 0.0.3
+Summary: simple bootstrap4 support for django
+Home-page: UNKNOWN
+Author: UNKNOWN
+Author-email: UNKNOWN
+License: MIT
+Description: Bootstrap 4 forms for Django
+        ============================
+        
+        Bootstrap 4 integration for django using `widget templates`_ that were
+        introduced in Django 1.11.
+        
+        Motivation
+        ----------
+        
+        This library is meant to be a drop-in replacement for
+        `django-bootstrap4`_. See below for a list of differences. I really like
+        that library, but it is hard to customize some things because everything
+        is done in python functions. By using widget templates, I hope this
+        library is more flexible.
+        
+        Installation
+        ------------
+        
+        Install with pip::
+        
+           pip install django-bs4
+        
+        After that you have to add it to ``INSTALLED_APPS``. You also need to
+        make sure that the correct ``FORM_RENDERER`` is selected and
+        ``django.forms`` is in ``INSTALLED_APPS`` (after ``django-bs4``). This
+        is required so that widget templates can be overwritten::
+        
+           INSTALLED_APPS = [
+               …
+               'django-bs4',
+               …
+               'django.forms',
+               …
+           ]
+        
+           FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+        
+        Usage
+        -----
+        
+        The following template tags are included in the ``bootstrap4`` library:
+        
+        -  ``bootstrap_field {boundfield}`` - Render a single field.
+        -  ``bootstrap_form {form}`` - Render errors and all fields for a form.
+           The ``<form>`` element itself is not included.
+        -  ``bootstrap_messages`` - Render messages from
+           ``django.contrib.messages``.
+        -  ``bootstrap_pagination {page}`` - Render pagination. A ``<nav>``
+           element is not included.
+        
+        Please refer to the source code for additional parameters.
+        
+        Differences to django-bootstrap4
+        --------------------------------
+        
+        -  Uses widget templates instead of custom renderers. IMHO this
+           makes the code much easier to read and customize. A big downside is
+           that I had to monkey-patch ``BoundField.as_widget()`` to include some
+           information that would otherwise not be available in the widget
+           templates.
+        -  Concentrates on forms fields and does therefore not include some
+           others features.
+        -  Uses ``small.text-danger`` instead of ``.invalid-feedback`` as it
+           does not depend on DOM location. (see also `twbs/bootstrap#29439`_)
+        -  Does not use ``.is-valid`` because I find it confusing with
+           server-side rendering.
+        -  Does not include dismiss-buttons for alerts to avoid depending on
+           JavaScript.
+        -  Does not include field errors at the top of forms as they are already
+           displayed on the fields themselves.
+        -  Improved ARIA support.
+        -  You will have to load bootstrap yourself.
+        -  No configuration.
+        
+        .. _widget templates: https://docs.djangoproject.com/en/stable/ref/forms/renderers/#overriding-built-in-widget-templates
+        .. _django-bootstrap4: https://github.com/zostera/django-bootstrap4
+        .. _twbs/bootstrap#29439: https://github.com/twbs/bootstrap/issues/29439
+        
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django

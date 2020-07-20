@@ -1,0 +1,6 @@
+{% load bootstrap4 %}
+{% for message in messages %}
+    <div class="{{ message|bootstrap_message_classes }}" role="alert">
+        {{ message }}
+    </div>
+{% endfor %}

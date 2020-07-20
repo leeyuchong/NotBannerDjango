@@ -1,0 +1,29 @@
+{% load i18n bootstrap4 %}
+
+<ul class="pagination {% if size %}pagination-{{ size }}{% endif %}">
+    <li class="page-item {% if not page.has_previous %}disabled{% endif %}">
+        <a class="page-link" {% if page.has_previous %}href="{% bootstrap_url_replace_param url parameter_name page.previous_page_number %}"{% endif %}>
+            {% trans 'Previous' %}
+        </a>
+    </li>
+
+    {% for i in pages_shown %}
+        <li class="page-item {% if i == page.number %}active{% endif %}" {% if i == page.number %}aria-current="page"{% endif %}>
+            <a class="page-link" href="{% bootstrap_url_replace_param url parameter_name i %}">
+                {% if has_previous and forloop.first %}
+                    &hellip;
+                {% elif has_next and forloop.last %}
+                    &hellip;
+                {% else %}
+                    {{ i }}
+                {% endif %}
+            </a>
+        </li>
+    {% endfor %}
+
+    <li class="page-item {% if not page.has_next %}disabled{% endif %}">
+        <a class="page-link" {% if page.has_next %}href="{% bootstrap_url_replace_param url parameter_name page.next_page_number %}"{% endif %}>
+            {% trans 'Next' %}
+        </a>
+    </li>
+</ul>
