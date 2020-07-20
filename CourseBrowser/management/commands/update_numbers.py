@@ -34,7 +34,6 @@ def genScheduleFile():
     f = requests.post("https://aisapps.vassar.edu/cgi-bin/courses.cgi", data=payload, headers=headers)
     schedule = open('scheduleOfClasses.txt', 'w')
     schedule.write(f.text)
-    #print(f.text, file=schedule)
     schedule.close()
 
 def removeTags():
@@ -57,6 +56,7 @@ class Course:
     fieldPos = [0, 9, 13, 26, 57, 63, 66, 70, 74, 78, 82, 87, 90, 93, 96, 99, 102, 109, 125, 131, 146, 131, 146, 158] #length=24
     #           0  1  2    3  4   5   6   7   8   9   10  11  12  13  14  15  16   17    18   19   20   21   22   23
  
+    #fieldPos = [0, 9, 22, 35, 66, 72, 75, 79, 83 ,87, 91, 96, 99, 102, 105, 108, 111, 118, 134, 140, 156, 140, 156, 167]
     def __init__(self, inputLine):
         self.inputLn = inputLine
 
@@ -66,17 +66,26 @@ class Course:
             self.values[i] = None
         # when characters 0 to 9 are blank, the line is a line for the class' second day
         if self.inputLn[0:9].strip()=='': 
-            self.values[18]=(self.inputLn[112:116]).strip()
-            self.values[19]=(self.inputLn[118:131]).strip()
+            self.values[20]=(self.inputLn[113:119]).strip()
+            self.values[21]=(self.inputLn[119:133]).strip()
 
         else: #non blank 
-            if '-' in self.inputLn[0:9]: #course limits present
-                fieldPos_limits = [0, 0, 0, 13, 44, 50, 53, 57, 61, 65, 69, 74, 77, 80, 83, 86, 89, 96, 112, 118, 133, 118, 133, 145] #length=24                                     
-                for i in range(2, 24): 
+            
+            if self.inputLn[9:22].strip()=='': #course limits present
+                #fieldPos_limits = [0, 0, 9, 13, 44, 50, 53, 57, 61, 65, 69, 74, 77, 80, 83, 86, 89, 96, 112, 118, 133, 118, 133, 145] #length=24                                     
+                fieldPos_limits = [0, 0, 22, 35, 66, 72, 75, 79, 83 ,87, 91, 96, 99, 102, 105, 108, 111, 118, 134, 140, 156, 140, 156, 167] #length=24                                     
+
+                for i in range(1, 24): 
                     if i == 20 or i == 21: # skip over the d2 time2 fields
+                        #print('check val', self.values[i])
                         continue
                     elif i < 23:
                         self.values[i] = self.inputLn[fieldPos_limits[i]:fieldPos_limits[i + 1]]
+                        '''
+                        print('i: ',i)
+                        print('checkv val', self.values[i])
+                        print('checkv val len', len(self.values[i]))
+                        '''
                     else:  #if i = 23, read until the end of the line
                         self.values[i] = self.inputLn[fieldPos_limits[i]:]
                     self.values[i] = self.values[i].strip()
@@ -91,7 +100,8 @@ class Course:
 
             elif '/' in self.inputLn[0:9]: 
                 self.values[1]=self.inputLn[0:12].rstrip()
-            else: #course limits not present, only number of requests
+            
+            else: #course limits not present, only number of requests'''
                 reqNumber = self.inputLn[0:9]
                 if reqNumber != '' and ('F' not in reqNumber) and ('S' not in reqNumber): # avoid the lines with "Fall" or "Spring"
                     self.values[0]=int(reqNumber.strip())
@@ -123,7 +133,7 @@ class Course:
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        # Courses.objects.all().delete()
+        # Courses.objects.all().delete() # reset db when rerun (useful when db contains false/error data)
         # Courses.objects.raw('TRUNCATE table search_courses')
         genScheduleFile()
         removeTags()
@@ -137,22 +147,25 @@ class Command(BaseCommand):
             if "Course Listings" in line or "Supplement to the Schedule of Classes" in line or "Course listings for Fall 2020:" in line or "COURSE ID " in line or "----" in line or "Pre Reg  Class Limits" in line or "Requests SR/JR/SO/FR" in line :
                 continue
             else:
+                #print('line: ',line)
                 course = Course(line)
                 course.scheduleReader()
                 courseIDData = course.values[2]
+                #print('course IDData', courseIDData)
                 
                 if course.values[0] != '' and course.values[0] != 'F' and course.values[0] != 'S' and course.values[0] is not None:
                     preRegRequests=course.values[0]
-                elif course.values[1] is not None and '/' in course.values[1]:
-                    courseLimits=course.values[1]
+                #elif course.values[1] is not None and '/' in course.values[1]:
+                #    courseLimits=course.values[1]
                 else: 
                     if courseIDData is not None and courseIDData != "": # this line contains the full course listing
-                        print(courseIDData)
+                        # print(courseIDData)
                         if courseIDData[3] == "-" or courseIDData[4] == '-':
                             courseIDPrev = course.values[2]
+                            # print('course value 20', course.values[20])
                             try: # check to see if the course already exists
                                 updateFields=True
-                                c = Courses.objects.get(courseID=course.values[2])
+                                c = Courses.objects.get(courseID=course.values[1])
                             except ObjectDoesNotExist:
                                 updateFields=False
                                 c=Courses()
@@ -197,10 +210,10 @@ class Command(BaseCommand):
                             courseLimits=""
 
                     else: # this line only contains the d2 and t2 values
-                        d2Value = course.values[18]
+                        d2Value = course.values[20]
                         # update the startime2, duration2 and delt92 fields
                         if d2Value is not None and ("M" in d2Value or "T" in d2Value or "W" in d2Value or "R" in d2Value or "F" in d2Value):
-                            t2Value = course.values[19]
+                            t2Value = course.values[21]
 
                             if "PM" in t2Value or "AM" in t2Value:
                                 if "-" in t2Value:
@@ -226,11 +239,13 @@ class Command(BaseCommand):
                                     deltnine2 = float((deltnine2.total_seconds()/60)/60)
                                     deltnine2 = (deltnine2*40)+47
 
+                                    print('couse id prev: ', courseIDPrev)
                                     clast=Courses.objects.get(courseID=courseIDPrev)
-                                    clast.d2=course.values[18]
-                                    clast.time2=course.values[19]
+                                    clast.d2=course.values[20]
+                                    clast.time2=course.values[21]
                                     clast.starttime2=starttime2
                                     clast.duration2=duration2
                                     clast.delt92=deltnine2
                                     clast.save(update_fields=['d2', 'time2', 'starttime2', 'duration2', 'delt92'])
-        print(time.time() - start_time, "seconds")
+    
+                                    print(time.time() - start_time, "seconds")

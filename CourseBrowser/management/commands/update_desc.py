@@ -49,9 +49,9 @@ class Command(BaseCommand):
         # to avoid urllib.error.URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1108)>
         ssl._create_default_https_context = ssl._create_unverified_context
         global courseCodes
-        for i in range(1, 23):
+        for i in range(1, 22):
             # iterate over page numbers
-            urlData ="https://catalogue.vassar.edu/content.php?filter%5B27%5D=-1&filter%5B29%5D=&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=" + str(i) + "&cur_cat_oid=39&expand=1&navoid=7049&print=1#acalog_template_course_filter"
+            urlData ="https://catalogue.vassar.edu/content.php?catoid=38&navoid=6829&filter%5B27%5D=-1&filter%5B29%5D=&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=" + str(i) + "&filter%5B3%5D=1&expand=1&print#acalog_template_course_filter"
             # open the url
             webUrl = urllib.request.urlopen(urlData)
             data = webUrl.read().decode("utf-8")
@@ -74,14 +74,12 @@ class Command(BaseCommand):
                 courseEntry = courseEntry.replace(r"\xa0", '')
                 courseInfo = [None] * 3
                 courseCode = courseEntry[22:26].strip()
-                # print(courseCode)
                 if not (courseCode in courseCodes):
                     continue
                 courseInfo[0] = courseCode
                 courseInfo[1] = courseEntry[27:30].strip()
                 courseInfo[2] = courseEntry[courseEntry.find("unit(s)") + 7:].replace(r"\n", " ").rstrip(r"'").strip()
                 courseInfo[2] = courseInfo[2][:-2]
-                # print(courseInfo)
                 for c in Courses.objects.filter(courseID__icontains=courseInfo[0]).filter(courseID__icontains=courseInfo[1]):
                     c.description=courseInfo[2]
                     c.save()

@@ -151,6 +151,9 @@
                     {% if value.instructor != '' %}
                         | {{value.instructor}} 
                     {% endif %}
+                    {% if value.status != '' %}
+                        | {{value.status}} 
+                    {% endif %}
                 </p>
             </div>
             {% with classTemplate="d-flex position-absolute sch-box" base=0.66045 pTemplate="small m-0"%}
@@ -179,23 +182,23 @@
             {% endfor %}
             {% for d in value.d2 %}
                 {% if d == 'M' %}
-                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 9%; height: {{ base|mul:value.duration1 }}px; top: {{value.delt91}}px">
+                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 9%; height: {{ base|mul:value.duration2 }}px; top: {{value.delt92}}px">
                         <p class="{{ pTemplate }}">{{value.courseID}}</p>
                     </div>
                 {% elif d == 'T' %}
-                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 27%; height: {{ base|mul:value.duration1 }}px; top: {{value.delt91}}px">
+                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 27%; height: {{ base|mul:value.duration2 }}px; top: {{value.delt92}}px">
                         <p class="{{ pTemplate }}">{{value.courseID}}</p>
                     </div>
                 {% elif d == 'W' %}
-                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 44.7%; height: {{ base|mul:value.duration1 }}px; top: {{value.delt91}}px">
+                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 44.7%; height: {{ base|mul:value.duration2 }}px; top: {{value.delt92}}px">
                         <p class="{{ pTemplate }}">{{value.courseID}}</p>
                     </div>
                 {% elif d == 'R' %}
-                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 62.5%; height: {{ base|mul:value.duration1 }}px; top: {{value.delt91}}px">
+                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 62.5%; height: {{ base|mul:value.duration2 }}px; top: {{value.delt92}}px">
                         <p class="{{ pTemplate }}">{{value.courseID}}</p>
                     </div>
                 {% elif d == 'F' %}
-                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 80.5%; height: {{ base|mul:value.duration1 }}px; top: {{value.delt91}}px">
+                    <div class="box{{key|slice:'6:7'}} {{classTemplate}}" style="left: 80.5%; height: {{ base|mul:value.duration2 }}px; top: {{value.delt92}}px">
                         <p class="{{ pTemplate }}">{{value.courseID}}</p>
                     </div>
                 {% endif %}

@@ -1,0 +1,8 @@
+{% if widget.wrap_label %}
+    <div class="form-check">
+        {% include "django/forms/widgets/checkbox.html" %}
+        <label class="form-check-label" for="{{ widget.attrs.id }}">{{ widget.label }}</label>
+    </div>
+{% else %}
+    {% include "django/forms/widgets/checkbox.html" %}
+{% endif %}

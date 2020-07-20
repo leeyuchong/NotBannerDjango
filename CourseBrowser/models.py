@@ -35,6 +35,7 @@ class Courses(models.Model):
     loc=models.CharField(max_length=10, blank=True)
     instructor=models.CharField(max_length=30, blank=True)
     description=models.TextField(blank=True)
+    status=models.CharField(max_length=9)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
